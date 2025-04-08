@@ -7,7 +7,7 @@ namespace PWSH.Kaspa.Verbs
 {
     public sealed partial class CalculateTransactionMass 
     {
-        private class RequestSchema : IEquatable<RequestSchema>
+        public sealed class RequestSchema : IEquatable<RequestSchema>
         {
             [JsonPropertyName("version")]
             [JsonConverter(typeof(StringToUintConverter))]
@@ -75,7 +75,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        private class TransactionOutputRequestSchema : IEquatable<TransactionOutputRequestSchema>
+        public sealed class TransactionOutputRequestSchema : IEquatable<TransactionOutputRequestSchema>
         {
             [JsonPropertyName("amount")]
             [JsonConverter(typeof(StringToUlongConverter))]
@@ -126,7 +126,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        private class ScriptPublicKeyRequestSchema : IEquatable<ScriptPublicKeyRequestSchema>
+        public sealed class ScriptPublicKeyRequestSchema : IEquatable<ScriptPublicKeyRequestSchema>
         {
             [JsonPropertyName("version")]
             [JsonConverter(typeof(StringToUintConverter))]
@@ -177,7 +177,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        private class TransactionInputRequestSchema : IEquatable<TransactionInputRequestSchema>
+        public sealed class TransactionInputRequestSchema : IEquatable<TransactionInputRequestSchema>
         {
             [JsonPropertyName("previousOutpoint")]
             public PreviousOutpointRequestSchema? PreviousOutpoint { get; set; }
@@ -237,7 +237,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        private class PreviousOutpointRequestSchema : IEquatable<PreviousOutpointRequestSchema>
+        public sealed class PreviousOutpointRequestSchema : IEquatable<PreviousOutpointRequestSchema>
         {
             [JsonPropertyName("transactionId")]
             public string? TransactionID { get; set; }

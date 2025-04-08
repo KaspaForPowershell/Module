@@ -1,8 +1,10 @@
-﻿using System.Text.Json;
+﻿using System.Management.Automation;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using PWSH.Kaspa.Base;
 using PWSH.Kaspa.Base.JSON.Converters;
 using PWSH.Kaspa.Base.JSON.Interfaces;
+using PWSH.Kaspa.Verbs.Interfaces;
 
 namespace PWSH.Kaspa.Verbs
 {
@@ -376,7 +378,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockTransactionResponseSchema : IEquatable<BlockTransactionResponseSchema>, IJSONableDisplayable
+        public sealed class BlockTransactionResponseSchema : IEquatable<BlockTransactionResponseSchema>, IJSONableDisplayable, IMassCalculable
         {
             [JsonPropertyName("outputs")]
             public List<BlockTransactionOutputResponseSchema>? Outputs { get; set; }
@@ -432,6 +434,66 @@ HELPERS                                                            |
 
             public string ToJSON()
                 => JsonSerializer.Serialize(this, KaspaModuleInitializer.Instance?.ResponseSerializer);
+
+            public CalculateTransactionMass.RequestSchema ToMassRequestSchema()
+            {
+                var request = new CalculateTransactionMass.RequestSchema()
+                {
+                    Version = Version,
+                    SubnetworkID = SubnetworkID,
+                    LockTime = LockTime
+                };
+
+                var inputs = Inputs;
+                if (inputs is not null)
+                {
+                    request.Inputs = [];
+
+                    foreach (var input in inputs)
+                    {
+                        var newRequestInput = new CalculateTransactionMass.TransactionInputRequestSchema { SignatureScript = input.SignatureScript };
+
+                        if (input.PreviousOutpoint is not null)
+                        {
+                            newRequestInput.PreviousOutpoint = new()
+                            {
+                                Index = input.PreviousOutpoint.Index,
+                                TransactionID = input.PreviousOutpoint.TransactionID
+                            };
+                        }
+
+                        newRequestInput.SignatureScript = input.SignatureScript;
+                        newRequestInput.Sequence = input.Sequence;
+                        newRequestInput.SigOpCount = input.SigOpCount;
+
+                        request.Inputs.Add(newRequestInput);
+                    }
+                }
+
+                var outputs = Outputs;
+                if (outputs is not null)
+                {
+                    request.Outputs = [];
+
+                    foreach (var output in outputs)
+                    {
+                        var newRequestOutput = new CalculateTransactionMass.TransactionOutputRequestSchema { Amount = output.Amount };
+
+                        if (output.ScriptPublicKey is not null)
+                        {
+                            newRequestOutput.ScriptPublicKey = new CalculateTransactionMass.ScriptPublicKeyRequestSchema()
+                            {
+                                ScriptPublicKey = output.ScriptPublicKey.ScriptPublicKey,
+                                Version = output.ScriptPublicKey.Version
+                            };
+                        }
+
+                        request.Outputs.Add(newRequestOutput);
+                    }
+                }
+
+                return request;
+            }
 
 /* -----------------------------------------------------------------
 OVERRIDES                                                          |
