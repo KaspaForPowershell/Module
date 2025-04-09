@@ -1,5 +1,4 @@
-﻿using System.Management.Automation;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using PWSH.Kaspa.Base;
 using PWSH.Kaspa.Base.JSON.Converters;
@@ -10,7 +9,7 @@ namespace PWSH.Kaspa.Verbs
 {
     public sealed partial class GetBlocks
     {
-        public sealed class ResponseSchema : IEquatable<ResponseSchema>, IJSONableDisplayable
+        private sealed class ResponseSchema : IEquatable<ResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("blockHashes")]
             public List<string>? BlockHashes { get; set; }
@@ -62,7 +61,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockResponseSchema : IEquatable<BlockResponseSchema>, IJSONableDisplayable
+        private sealed class BlockResponseSchema : IEquatable<BlockResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("header")]
             public BlockHeaderResponseSchema? Header { get; set; }
@@ -125,7 +124,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockHeaderResponseSchema : IEquatable<BlockHeaderResponseSchema>, IJSONableDisplayable
+        private sealed class BlockHeaderResponseSchema : IEquatable<BlockHeaderResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("version")]
             [JsonConverter(typeof(StringToUintConverter))]
@@ -226,7 +225,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockVerboseDataResponseSchema : IEquatable<BlockVerboseDataResponseSchema>, IJSONableDisplayable
+        private sealed class BlockVerboseDataResponseSchema : IEquatable<BlockVerboseDataResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("isHeaderOnly")]
             public bool IsHeaderOnly { get; set; }
@@ -332,7 +331,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockExtraResponseSchema : IEquatable<BlockExtraResponseSchema>, IJSONableDisplayable
+        private sealed class BlockExtraResponseSchema : IEquatable<BlockExtraResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("color")]
             public string? Color { get; set; }
@@ -386,7 +385,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockParentHashResponseSchema : IEquatable<BlockParentHashResponseSchema>, IJSONableDisplayable
+        private sealed class BlockParentHashResponseSchema : IEquatable<BlockParentHashResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("parentHashes")]
             public List<string>? ParentHashes { get; set; }
@@ -431,7 +430,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockTransactionResponseSchema : IEquatable<BlockTransactionResponseSchema>, IJSONableDisplayable, IMassCalculable
+        private sealed class BlockTransactionResponseSchema : IEquatable<BlockTransactionResponseSchema>, IJSONableDisplayable, IMassCalculable
         {
             [JsonPropertyName("outputs")]
             public List<BlockTransactionOutputResponseSchema>? Outputs { get; set; }
@@ -589,7 +588,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockTransactionVerboseDataResponseSchema : IEquatable<BlockTransactionVerboseDataResponseSchema>, IJSONableDisplayable
+        private sealed class BlockTransactionVerboseDataResponseSchema : IEquatable<BlockTransactionVerboseDataResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("transactionId")]
             public string? TransactionID { get; set; }
@@ -652,7 +651,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockTransactionInputResponseSchema : IEquatable<BlockTransactionInputResponseSchema>, IJSONableDisplayable
+        private sealed class BlockTransactionInputResponseSchema : IEquatable<BlockTransactionInputResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("previousOutpoint")]
             public PreviousOutpointResponseSchema? PreviousOutpoint { get; set; }
@@ -711,7 +710,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockTransactionOutputResponseSchema : IEquatable<BlockTransactionOutputResponseSchema>, IJSONableDisplayable
+        private sealed class BlockTransactionOutputResponseSchema : IEquatable<BlockTransactionOutputResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("amount")]
             [JsonConverter(typeof(StringToUlongConverter))]
@@ -766,7 +765,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class PreviousOutpointResponseSchema : IEquatable<PreviousOutpointResponseSchema>, IJSONableDisplayable
+        private sealed class PreviousOutpointResponseSchema : IEquatable<PreviousOutpointResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("transactionId")]
             public string? TransactionID { get; set; }
@@ -816,7 +815,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class ScriptPublicKeyResponseSchema : IEquatable<ScriptPublicKeyResponseSchema>, IJSONableDisplayable
+        private sealed class ScriptPublicKeyResponseSchema : IEquatable<ScriptPublicKeyResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("version")]
             [JsonConverter(typeof(StringToUintConverter))]
@@ -866,7 +865,7 @@ OPERATOR                                                           |
                 => !(left == right);
         }
 
-        public sealed class BlockOutputVerboseDataResponseSchema : IEquatable<BlockOutputVerboseDataResponseSchema>, IJSONableDisplayable
+        private sealed class BlockOutputVerboseDataResponseSchema : IEquatable<BlockOutputVerboseDataResponseSchema>, IJSONableDisplayable
         {
             [JsonPropertyName("scriptPublicKeyType")]
             public string? ScriptPublicKeyType { get; set; }
