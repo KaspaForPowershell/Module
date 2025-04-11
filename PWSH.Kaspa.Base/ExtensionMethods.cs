@@ -42,8 +42,11 @@ namespace PWSH.Kaspa.Base
                 var uri = BuildRequestUri(api_address, query);
                 using var request = new HttpRequestMessage(method, uri);
 
-                if (body != null)
+                if (body is not null)
                 {
+                    if (method == HttpMethod.Get || method == HttpMethod.Head)
+                        return (null, new ErrorRecord(new InvalidOperationException($"HTTP method {method} does not support a request body."), "HttpRequestFailed", ErrorCategory.ConnectionError, obj));
+
                     var json = JsonSerializer.Serialize(body);
                     request.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 }
@@ -55,7 +58,7 @@ namespace PWSH.Kaspa.Base
                 return (await me.SendAsync(request, cts.Token), null);
             }
             catch (Exception e)
-            { return (null, new ErrorRecord(e, "UnhandledException", ErrorCategory.NotSpecified, obj)); }
+            { return (null, new ErrorRecord(e, "HttpRequestFailed", ErrorCategory.ConnectionError, obj)); }
         }
 
          /// <summary>
@@ -156,7 +159,6 @@ namespace PWSH.Kaspa.Base
         /// <returns>True if both lists are null or if they contain the same elements in the same order; false otherwise</returns>
         public static bool CompareList<T>(this List<T>? me, List<T>? other)
             => me is null && other is null || me is not null && other is not null && me.SequenceEqual(other);
-
 
         /// <summary>
         /// Compares two strings for exact equality using ordinal comparison.
